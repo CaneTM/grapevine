@@ -1,0 +1,1 @@
+export const serverUrl = 'https://evening-wave-15588.herokuapp.com';

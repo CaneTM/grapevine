@@ -1,0 +1,3 @@
+- fix bug when refreshing on visiting page
+- change default value of isLoggedIn for changeUserStatus
+- rearrange ternaries in App.js

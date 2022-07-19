@@ -1,23 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Login from "./components/login/Login";
+import Signup from "./components/login/Signup";
+import Homepage from "./components/site/Homepage";
+import Visiting from "./components/site/Visiting";
+
+const getUserStatus = () => {
+  let user = sessionStorage.getItem('userStatus');
+  return user ? JSON.parse(user) : {route: 'login', isLoggedIn: false, name: ''};
+}
+
+// gets name of logged in user in event of session interruption
+const getUsername = () => {
+  let username = sessionStorage.getItem('username');
+  return username ? JSON.parse(username) : '';
+}
 
 function App() {
+  
+  const [userStatus, setUserStatus] = useState(getUserStatus());
+  // the name of the logged in user
+  const [username, setUsername] = useState(getUsername());
+
+  const changeUserStatus = (route='login', isLoggedIn=false, name='') => {
+    setUserStatus({route, isLoggedIn, name});
+
+    // ensures that username will only hold the logged in user
+    if (!username) {
+      setUsername(name);
+    }
+    if (route === 'logout') {
+      setUsername('');
+    }
+  };
+
+  useEffect(() => {
+    sessionStorage.setItem('userStatus', JSON.stringify(userStatus));
+    sessionStorage.setItem('username', JSON.stringify(username));
+  }, [userStatus, username]);
+
+  const { route, isLoggedIn, name } = userStatus;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      {
+        route === 'login' || route === 'logout' ?
+          <Login changeUserStatus={changeUserStatus} /> : 
+            route === 'signup' ?
+              <Signup changeUserStatus={changeUserStatus} /> :
+              route === 'homepage' && name === username ?
+                <Homepage username={name} changeUserStatus={changeUserStatus} /> :
+                <Visiting visitorName={username} searchName={name} changeUserStatus={changeUserStatus} />
+      }
     </div>
   );
 }
