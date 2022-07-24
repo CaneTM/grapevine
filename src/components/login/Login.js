@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Alert from '../../Alert';
+import Alert from '../ui/Alert';
 import { serverUrl } from '../../utils'
 
 const Login = ({ changeUserStatus }) => {
@@ -24,7 +24,7 @@ const Login = ({ changeUserStatus }) => {
       const status = await resp.json();
 
       if (status === 'success') {
-        changeUserStatus('homepage', true, username);
+        changeUserStatus('feed', true, username);
       } else {
         setAlert({isShowing: true, msg: status});
       }

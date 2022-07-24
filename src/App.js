@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Login from "./components/login/Login";
 import Signup from "./components/login/Signup";
-import Homepage from "./components/site/Homepage";
-import Visiting from "./components/site/Visiting";
+import Homepage from "./components/main/Homepage";
+import Feed from "./components/main/Feed";
+import Visiting from "./components/main/Visiting";
 
 const getUserStatus = () => {
   let user = sessionStorage.getItem('userStatus');
@@ -40,19 +41,42 @@ function App() {
 
   const { route, isLoggedIn, name } = userStatus;
 
-  return (
-    <div className="container">
-      {
-        route === 'login' || route === 'logout' ?
-          <Login changeUserStatus={changeUserStatus} /> : 
-            route === 'signup' ?
-              <Signup changeUserStatus={changeUserStatus} /> :
-              route === 'homepage' && name === username ?
-                <Homepage username={name} changeUserStatus={changeUserStatus} /> :
-                <Visiting visitorName={username} searchName={name} changeUserStatus={changeUserStatus} />
-      }
-    </div>
-  );
+  if (isLoggedIn) {
+    if (route === 'homepage' && name === username) {
+      return <Homepage username={name} changeUserStatus={changeUserStatus} /> 
+    }
+    else if (route === 'feed') {
+      return <Feed changeUserStatus={changeUserStatus} username={username} />
+    }
+    else {
+      return <Visiting visitorName={username} searchName={name} changeUserStatus={changeUserStatus} />
+    }
+  }
+
+  else {
+    if (route === 'login' || route === 'logout') {
+      return <Login changeUserStatus={changeUserStatus} />
+    }
+    else {
+      return <Signup changeUserStatus={changeUserStatus} />
+    }
+  }
+
+  // return (
+  //   <div className="container">
+  //     {
+  //       route === 'login' || route === 'logout' ?
+  //         <Login changeUserStatus={changeUserStatus} /> : 
+  //         route === 'signup' ?
+  //           <Signup changeUserStatus={changeUserStatus} /> :
+  //           route === 'homepage' && name === username ?
+  //             <Homepage username={name} changeUserStatus={changeUserStatus} /> :
+  //             route === 'feed' ?
+  //               <Feed changeUserStatus={changeUserStatus} username={username} /> :
+  //               <Visiting visitorName={username} searchName={name} changeUserStatus={changeUserStatus} />
+  //     }
+  //   </div>
+  // );
 }
 
 export default App;

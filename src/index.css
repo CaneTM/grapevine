@@ -400,3 +400,7 @@ p {
   color: #721c24;
   background: #f8d7da;
 }
+.author {
+  text-decoration: underline;
+  cursor: pointer;
+}

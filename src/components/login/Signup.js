@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Alert from '../../Alert';
+import Alert from '../ui/Alert';
 import { serverUrl } from '../../utils';
 
-const Signup = ({ changeUserStatus, modifyAlert }) => {
+const Signup = ({ changeUserStatus }) => {
 
   const [username, setUsername] = useState('');
   const [confirmPassword1, setConfirmPassword1] = useState('');
@@ -28,7 +28,7 @@ const Signup = ({ changeUserStatus, modifyAlert }) => {
         const status = await resp.json();
 
         if (status === 'success') {
-          changeUserStatus('homepage', true, username);
+          changeUserStatus('feed', true, username);
         }
         else {
           setAlert({isShowing: true, msg: status});
